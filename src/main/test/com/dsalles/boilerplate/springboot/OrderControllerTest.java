@@ -1,13 +1,15 @@
-package com.dsalles.boilerplate.springboot.orders.test;
+package com.dsalles.boilerplate.springboot;
 
-import com.dsalles.boilerplate.springboot.orders.controller.OrderController;
+import com.dsalles.boilerplate.springboot.controller.OrderController;
 import com.dsalles.boilerplate.springboot.orders.model.Order;
 import com.dsalles.boilerplate.springboot.orders.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,13 +29,17 @@ public class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private OrderRepository orderRepository;
+
+    @InjectMocks
+    private OrderController orderController;
 
     private Order order;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         order = new Order();
         order.setId(1L);
         order.setName("Test Order");
