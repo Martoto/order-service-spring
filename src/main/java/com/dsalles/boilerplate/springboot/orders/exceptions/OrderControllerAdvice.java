@@ -1,6 +1,7 @@
 package com.dsalles.boilerplate.springboot.orders.exceptions;
 
 import com.dsalles.boilerplate.springboot.exceptions.ApiExceptionResponse;
+import com.dsalles.boilerplate.springboot.orders.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class OrderControllerAdvice {
 
     @ExceptionHandler(OrderNotFoundException.class)
-    ResponseEntity<ApiExceptionResponse> handleOrderNotFoundException(BadCredentialsException exception) {
+    ResponseEntity<ApiExceptionResponse> handleOrderNotFoundException(OrderNotFoundException exception) {
 
         final ApiExceptionResponse response = new ApiExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
@@ -23,7 +24,7 @@ public class OrderControllerAdvice {
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    ResponseEntity<ApiExceptionResponse> handleProductNotFoundException(BadCredentialsException exception) {
+    ResponseEntity<ApiExceptionResponse> handleProductNotFoundException(ProductNotFoundException exception) {
 
         final ApiExceptionResponse response = new ApiExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST, LocalDateTime.now());
 

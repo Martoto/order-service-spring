@@ -11,6 +11,7 @@ import com.dsalles.boilerplate.springboot.orders.repository.OrderRepository;
 import com.dsalles.boilerplate.springboot.orders.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,12 +26,14 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public OrderDTO getOrderById(Long id) {
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
@@ -42,7 +45,7 @@ public class OrderService {
         order.setName(orderDTO.name());
         order.setDescription(orderDTO.description());
         order.setOrderProducts(orderDTO.orderProducts().stream()
-                .map(this::convertToEntity)
+                .map(op -> convertToEntity(op, order))
                 .collect(Collectors.toList()));
         Order savedOrder = orderRepository.save(order);
         return convertToDTO(savedOrder);
@@ -54,7 +57,7 @@ public class OrderService {
         order.setName(orderDTO.name());
         order.setDescription(orderDTO.description());
         order.setOrderProducts(orderDTO.orderProducts().stream()
-                .map(this::convertToEntity)
+                .map(op -> convertToEntity(op, order))
                 .collect(Collectors.toList()));
         Order updatedOrder = orderRepository.save(order);
         return convertToDTO(updatedOrder);
@@ -66,7 +69,7 @@ public class OrderService {
 
     private OrderDTO convertToDTO(Order order) {
         List<OrderProductDTO> orderProductDTOs = order.getOrderProducts().stream()
-                .map(orderProduct -> new OrderProductDTO(orderProduct.getId(), orderProduct.getOrder().getId(), orderProduct.getProduct().getId(), orderProduct.getQuantity()))
+                .map(orderProduct -> new OrderProductDTO(orderProduct.getProduct().getId(),  orderProduct.getQuantity()))
                 .collect(Collectors.toList());
         BigDecimal value = order.getOrderProducts().stream()
                 .map(orderProduct -> orderProduct.getProduct().getPrice().multiply(new BigDecimal(orderProduct.getQuantity())))
@@ -74,9 +77,9 @@ public class OrderService {
         return new OrderDTO(order.getId(), order.getName(), order.getDescription(), value, orderProductDTOs);
     }
 
-    private OrderProduct convertToEntity(OrderProductDTO orderProductDTO) {
+    private OrderProduct convertToEntity(OrderProductDTO orderProductDTO, Order order) {
         Product product = productRepository.findById(orderProductDTO.productId())
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        return new OrderProduct(null, null, product, orderProductDTO.quantity());
+        return new OrderProduct(null, order, product, orderProductDTO.quantity());
     }
 }
