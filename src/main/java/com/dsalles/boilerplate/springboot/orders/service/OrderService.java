@@ -2,6 +2,8 @@ package com.dsalles.boilerplate.springboot.orders.service;
 
 import com.dsalles.boilerplate.springboot.orders.dto.OrderDTO;
 import com.dsalles.boilerplate.springboot.orders.dto.OrderProductDTO;
+import com.dsalles.boilerplate.springboot.orders.exceptions.OrderNotFoundException;
+import com.dsalles.boilerplate.springboot.orders.exceptions.ProductNotFoundException;
 import com.dsalles.boilerplate.springboot.orders.model.Order;
 import com.dsalles.boilerplate.springboot.orders.model.OrderProduct;
 import com.dsalles.boilerplate.springboot.orders.model.Product;
@@ -32,7 +34,7 @@ public class OrderService {
     public OrderDTO getOrderById(Long id) {
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
     public OrderDTO createOrder(OrderDTO orderDTO) {
@@ -48,7 +50,7 @@ public class OrderService {
 
     public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setName(orderDTO.name());
         order.setDescription(orderDTO.description());
         order.setOrderProducts(orderDTO.orderProducts().stream()
@@ -74,7 +76,7 @@ public class OrderService {
 
     private OrderProduct convertToEntity(OrderProductDTO orderProductDTO) {
         Product product = productRepository.findById(orderProductDTO.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
         return new OrderProduct(null, null, product, orderProductDTO.quantity());
     }
 }
