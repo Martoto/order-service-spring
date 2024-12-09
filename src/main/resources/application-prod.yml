@@ -1,0 +1,51 @@
+server:
+  http2:
+    enabled: true
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/your_database_name
+    driver-class-name: org.postgresql.Driver
+    username: your_username
+    password: your_password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  jta:
+    enabled: false
+
+springdoc:
+  show-actuator: true
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    org.springframework: DEBUG
+    com.dsalles.boilerplate.springboot: DEBUG
+
+
+jwt:
+  secretKey: secret
+  issuer: www.martoto.com.br
+  expirationMinute: 10
+
+swagger:
+  contact-name: Daniel Salles
+  contact-mail: daniel.sant.salles@gmail.com
+  contact-url: https://www.linkedin.com/in/daniel-salles-b0b1361a5/
+  app-name: Spring Boot Boilerplate Project
+  app-description: "Spring Boot Boilerplate is a starter kit. This project includes : Spring Boot(3.4.0), Spring Data JPA, Spring Validation, Spring Security + JWT Token, PostgreSQL, Mapstruct, Lombok, Swagger (Open API)"
+  app-version: 3.4.0
+  app-license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  app-license: Apache 2.0
