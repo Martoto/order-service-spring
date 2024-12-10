@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -14,7 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class OrderProduct {
 
     @Id
-    private String id;
+    @Builder.Default
+    private String id = UUID.randomUUID().toString();
 
     @DBRef
     private Order order;

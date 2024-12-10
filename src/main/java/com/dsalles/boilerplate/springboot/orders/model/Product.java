@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +18,8 @@ import java.util.List;
 public class Product {
 
     @Id
-    private String id;
+    @Builder.Default
+    private String id = UUID.randomUUID().toString();
 
     private String name;
 
@@ -25,6 +27,4 @@ public class Product {
 
     private BigDecimal price;
 
-    @DBRef
-    private List<OrderProduct> orderProducts;
 }
