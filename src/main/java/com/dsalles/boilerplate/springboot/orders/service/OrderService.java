@@ -34,7 +34,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDTO getOrderById(Long id) {
+    public OrderDTO getOrderById(String id) {
         return orderRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
@@ -51,7 +51,7 @@ public class OrderService {
         return convertToDTO(savedOrder);
     }
 
-    public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+    public OrderDTO updateOrder(String id, OrderDTO orderDTO) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
         order.setName(orderDTO.name());
@@ -63,7 +63,7 @@ public class OrderService {
         return convertToDTO(updatedOrder);
     }
 
-    public void deleteOrder(Long id) {
+    public void deleteOrder(String id) {
         orderRepository.deleteById(id);
     }
 

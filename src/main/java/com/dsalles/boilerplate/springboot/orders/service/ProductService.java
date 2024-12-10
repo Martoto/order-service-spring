@@ -22,7 +22,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDTO getProductById(String id) {
         return productRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -34,7 +34,7 @@ public class ProductService {
         return convertToDTO(savedProduct);
     }
 
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(String id, ProductDTO productDTO) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDTO.name());
@@ -44,7 +44,7 @@ public class ProductService {
         return convertToDTO(updatedProduct);
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(String id) {
         productRepository.deleteById(id);
     }
 

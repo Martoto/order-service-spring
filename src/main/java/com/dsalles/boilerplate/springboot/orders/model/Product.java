@@ -1,22 +1,23 @@
 package com.dsalles.boilerplate.springboot.orders.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PRODUCTS")
+@Document(collection = "products")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -24,6 +25,6 @@ public class Product {
 
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "product")
+    @DBRef
     private List<OrderProduct> orderProducts;
 }

@@ -41,14 +41,14 @@ public class OrderControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         order = new Order();
-        order.setId(1L);
+        order.setId("1");
         order.setName("Test Order");
         order.setDescription("This is a test order");
     }
 
     @Test
     void testGetOrderById() throws Exception {
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.findById("1")).thenReturn(Optional.of(order));
 
         mockMvc.perform(get("/orders/1")
                         .accept(MediaType.APPLICATION_JSON))

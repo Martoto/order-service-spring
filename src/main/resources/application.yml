@@ -2,6 +2,11 @@ server:
   http2:
     enabled: true
 spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test
   datasource:
     url: jdbc:h2:file:/data/testdb
     driver-class-name: org.h2.Driver

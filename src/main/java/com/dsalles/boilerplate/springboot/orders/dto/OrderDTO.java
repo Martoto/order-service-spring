@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record OrderDTO(
-        Long id,
+        String id,
         @NotBlank(message = "Name is mandatory")
         @Size(max = 100, message = "Name must be less than 100 characters")
         String name,

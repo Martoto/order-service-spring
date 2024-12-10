@@ -1,27 +1,25 @@
 package com.dsalles.boilerplate.springboot.orders.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ORDER_PRODUCTS")
+@Document(collection = "order_products")
 public class OrderProduct {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @DBRef
     private Order order;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
+    @DBRef
     private Product product;
 
     private int quantity;

@@ -1,27 +1,26 @@
 package com.dsalles.boilerplate.springboot.orders.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ORDERS")
+@Document(collection = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
 
     private String description;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @DBRef
     private List<OrderProduct> orderProducts;
-
 }
